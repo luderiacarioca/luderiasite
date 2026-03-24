@@ -13,8 +13,7 @@
   --orange2:#e97901;
   --blue:#0b355c;
   --blue2:#071f36;
-
-  --text:#ffffff;
+  --text:#fff;
   --muted:#cbd5e1;
   --line:rgba(255,255,255,.12);
   --radius:18px;
@@ -27,7 +26,7 @@ body{
   background:linear-gradient(180deg,var(--blue),var(--blue2));
 }
 
-a{ text-decoration:none; color:inherit; }
+a{text-decoration:none;color:inherit;}
 
 .bg{
   position:fixed;
@@ -42,7 +41,6 @@ a{ text-decoration:none; color:inherit; }
 .brand{display:flex;gap:12px;align-items:center}
 .brand img{width:46px}
 
-/* GRID */
 .hero{
   display:grid;
   grid-template-columns:1.2fr .8fr;
@@ -58,14 +56,12 @@ a{ text-decoration:none; color:inherit; }
   backdrop-filter:blur(10px);
 }
 
-/* BOTÕES */
 .buttons{display:flex;gap:12px;flex-wrap:wrap;margin:18px 0}
 
 .btn{
   padding:12px 18px;
   border-radius:14px;
   font-weight:900;
-  font-size:15px;
   border:1px solid var(--line);
   background:linear-gradient(135deg,var(--orange),var(--orange2));
   color:#111;
@@ -85,41 +81,42 @@ a{ text-decoration:none; color:inherit; }
   border-radius:14px;
   aspect-ratio:4/3;
   object-fit:cover;
+  cursor:pointer;
+  transition:.3s;
+}
+
+.gallery img:hover{
+  transform:scale(1.05);
+}
+
+/* MOBILE 🔥 */
+@media(max-width:900px){
+  .hero{display:flex;flex-direction:column;}
+  .gallery{grid-template-columns:1fr;} /* 🔥 imagens grandes */
 }
 
 /* HORÁRIOS */
-.schedule{
-  display:flex;
-  flex-direction:column;
-  gap:10px;
-}
-
+.schedule{display:flex;flex-direction:column;gap:10px}
 .day{
   display:flex;
   justify-content:space-between;
   padding:12px;
   border-radius:12px;
   background:rgba(255,255,255,.06);
-  border:1px solid var(--line);
 }
 
-/* STATUS */
-.status{font-weight:900;margin-bottom:16px}
-.open{color:#4ade80}
-.closed{color:#f87171}
-
-/* MODAL */
-#modal{
+/* LIGHTBOX */
+#lightbox{
   display:none;
   position:fixed;
   inset:0;
-  background:rgba(0,0,0,.9);
+  background:rgba(0,0,0,.95);
   justify-content:center;
   align-items:center;
   z-index:999;
 }
 
-#modal img{
+#lightbox img{
   max-width:90%;
   max-height:90%;
   border-radius:12px;
@@ -133,38 +130,16 @@ a{ text-decoration:none; color:inherit; }
   display:flex;
   flex-direction:column;
   gap:10px;
-  z-index:999;
 }
 
 .float a{
-  width:52px;
-  height:52px;
-  border-radius:50%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
+  width:52px;height:52px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
 }
 
 .whatsapp{background:#25D366;}
 .instagram{background:#E1306C;}
 .float img{width:26px}
-
-/* 🔥 MOBILE */
-@media(max-width:900px){
-
-  .hero{
-    display:flex;
-    flex-direction:column;
-  }
-
-  .main-card{order:1;}
-  .hours{order:2;}
-
-  /* 🔥 quebra a galeria do card no mobile */
-  .gallery{
-    margin-top:24px;
-  }
-}
 </style>
 </head>
 
@@ -184,8 +159,7 @@ a{ text-decoration:none; color:inherit; }
 
   <main class="hero">
 
-    <!-- 🔥 CARD ÚNICO (conteúdo + galeria) -->
-    <section class="card main-card">
+    <section class="card">
       <h2>Luderia Carioca</h2>
 
       <p>
@@ -195,27 +169,23 @@ a{ text-decoration:none; color:inherit; }
       </p>
 
       <div class="buttons">
-        <button class="btn" onclick="openModal()">🍔 Ver cardápio</button>
+        <button class="btn" onclick="openMenu()">🍔 Ver cardápio</button>
         <a class="btn" href="http://luderiacarioca.acervodejogos.com.br" target="_blank">🎲 Explorar jogos</a>
         <a class="btn" href="https://maps.app.goo.gl/XU7Xuym5vxjvWXQm8" target="_blank">📍 Ver como chegar</a>
       </div>
 
-      <!-- 🔥 GALERIA AGORA DENTRO DO MESMO CARD -->
       <div class="gallery">
-        <img src="https://i.ibb.co/x8P2Csbc/padr-o.webp">
-        <img src="https://i.ibb.co/TB9RmS24/sobremesa.webp">
-        <img src="https://i.ibb.co/vCFJnLxk/comida.webp">
-        <img src="https://i.ibb.co/Rk0jmL3J/simpatia.webp">
-        <img src="https://i.ibb.co/gbtmWkYj/acervo.webp">
-        <img src="https://i.ibb.co/hxT0qwyh/primeiro-andar.webp">
+        <img src="https://i.ibb.co/x8P2Csbc/padr-o.webp" onclick="openImg(this.src)">
+        <img src="https://i.ibb.co/TB9RmS24/sobremesa.webp" onclick="openImg(this.src)">
+        <img src="https://i.ibb.co/vCFJnLxk/comida.webp" onclick="openImg(this.src)">
+        <img src="https://i.ibb.co/Rk0jmL3J/simpatia.webp" onclick="openImg(this.src)">
+        <img src="https://i.ibb.co/gbtmWkYj/acervo.webp" onclick="openImg(this.src)">
+        <img src="https://i.ibb.co/hxT0qwyh/primeiro-andar.webp" onclick="openImg(this.src)">
       </div>
     </section>
 
-    <!-- HORÁRIOS -->
-    <aside class="card hours">
-      <div id="status" class="status"></div>
-
-      <h3>Horário de funcionamento</h3>
+    <aside class="card">
+      <h3>Horário</h3>
 
       <div class="schedule">
         <div class="day"><span>Segunda</span><strong>Fechado</strong></div>
@@ -232,9 +202,9 @@ a{ text-decoration:none; color:inherit; }
 
 </div>
 
-<!-- MODAL -->
-<div id="modal" onclick="closeModal()">
-  <img src="https://i.postimg.cc/T3qJVwfn/cardapio.jpg">
+<!-- LIGHTBOX -->
+<div id="lightbox" onclick="closeImg()">
+  <img id="lightbox-img">
 </div>
 
 <!-- FLOAT -->
@@ -248,44 +218,14 @@ a{ text-decoration:none; color:inherit; }
 </div>
 
 <script>
-function openModal(){document.getElementById("modal").style.display="flex";}
-function closeModal(){document.getElementById("modal").style.display="none";}
-
-function checkOpen(){
-  const now=new Date();
-  const d=now.getDay();
-  const h=now.getHours()+now.getMinutes()/60;
-
-  const s={
-    0:[14,22],
-    1:null,
-    2:null,
-    3:[17,23],
-    4:[17,23],
-    5:[16,24],
-    6:[14,24]
-  };
-
-  const el=document.getElementById("status");
-
-  if(!s[d]){
-    el.innerHTML="❌ Fechado hoje";
-    el.className="status closed";
-    return;
-  }
-
-  const [o,c]=s[d];
-
-  if(h>=o && h<c){
-    el.innerHTML="🟢 Aberto agora";
-    el.className="status open";
-  }else{
-    el.innerHTML="🔴 Fechado agora";
-    el.className="status closed";
-  }
+function openImg(src){
+  document.getElementById("lightbox").style.display="flex";
+  document.getElementById("lightbox-img").src=src;
 }
 
-checkOpen();
+function closeImg(){
+  document.getElementById("lightbox").style.display="none";
+}
 </script>
 
 </body>
