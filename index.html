@@ -3,7 +3,6 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-
 <title>Luderia Carioca</title>
 
 <link rel="icon" href="https://i.ibb.co/F4fd0N9L/Logo-Luderia-Carioca-Fundo-Transparente.png">
@@ -22,15 +21,14 @@
   --radius:18px;
 }
 
-/* BASE */
 body{
   margin:0;
-  font-family:system-ui, sans-serif;
+  font-family:system-ui;
   color:var(--text);
   background:linear-gradient(180deg,var(--blue),var(--blue2));
 }
 
-a{ text-decoration:none; color:inherit; } /* 🔥 remove sublinhado global */
+a{ text-decoration:none; color:inherit; }
 
 .bg{
   position:fixed;
@@ -40,30 +38,11 @@ a{ text-decoration:none; color:inherit; } /* 🔥 remove sublinhado global */
   z-index:-1;
 }
 
-.wrap{
-  max-width:1100px;
-  margin:auto;
-  padding:24px;
-
-  animation:fadeIn .8s ease;
-}
+.wrap{max-width:1100px;margin:auto;padding:24px}
 
 /* HEADER */
-.brand{
-  display:flex;
-  align-items:center;
-  gap:12px;
-}
-
-.brand img{
-  width:46px;
-  animation:float 4s ease-in-out infinite;
-}
-
-.brand h1{
-  margin:0;
-  font-size:18px;
-}
+.brand{display:flex;gap:12px;align-items:center}
+.brand img{width:46px}
 
 /* LAYOUT */
 .hero{
@@ -79,26 +58,10 @@ a{ text-decoration:none; color:inherit; } /* 🔥 remove sublinhado global */
   border-radius:var(--radius);
   padding:24px;
   backdrop-filter:blur(10px);
-
-  animation:slideUp .6s ease;
-}
-
-/* TEXTO */
-h2{margin-top:0;font-size:36px}
-
-p{
-  color:var(--muted);
-  font-size:16px;
-  line-height:1.5;
 }
 
 /* BOTÕES */
-.buttons{
-  display:flex;
-  gap:12px;
-  flex-wrap:wrap;
-  margin:18px 0;
-}
+.buttons{display:flex;gap:12px;flex-wrap:wrap;margin:18px 0}
 
 .btn{
   padding:12px 18px;
@@ -109,13 +72,11 @@ p{
   background:linear-gradient(135deg,var(--orange),var(--orange2));
   color:#111;
   cursor:pointer;
-
-  transition:all .25s ease;
+  transition:.25s;
 }
 
 .btn:hover{
-  transform:translateY(-2px) scale(1.02);
-  box-shadow:0 8px 20px rgba(0,0,0,.35);
+  transform:translateY(-2px);
 }
 
 /* GALERIA */
@@ -130,21 +91,10 @@ p{
   border-radius:14px;
   aspect-ratio:4/3;
   object-fit:cover;
-
-  transition:transform .3s ease;
-}
-
-.gallery img:hover{
-  transform:scale(1.05);
 }
 
 /* STATUS */
-.status{
-  font-weight:900;
-  font-size:16px;
-  margin-bottom:16px;
-}
-
+.status{font-weight:900;margin-bottom:16px}
 .open{color:#4ade80}
 .closed{color:#f87171}
 
@@ -181,64 +131,57 @@ p{
   border-radius:12px;
 }
 
-/* FOOTER */
-footer{
-  margin-top:30px;
+/* 🔥 FLOAT BUTTONS */
+.float{
+  position:fixed;
+  bottom:20px;
+  right:20px;
   display:flex;
-  justify-content:space-between;
-  align-items:center;
-  flex-wrap:wrap;
-  color:var(--muted);
+  flex-direction:column;
+  gap:10px;
+  z-index:999;
 }
 
-.social{
-  display:flex;
-  gap:12px;
-}
-
-.social a{
-  width:44px;
-  height:44px;
+.float a{
+  width:52px;
+  height:52px;
+  border-radius:50%;
   display:flex;
   align-items:center;
   justify-content:center;
-  border-radius:12px;
-  background:rgba(255,255,255,.1);
-  border:1px solid var(--line);
-
+  box-shadow:0 6px 20px rgba(0,0,0,.4);
   transition:.2s;
 }
 
-.social a:hover{
+.float a:hover{
   transform:scale(1.1);
 }
 
-.social img{width:22px}
+.whatsapp{background:#25D366;}
+.instagram{background:#E1306C;}
 
-/* ANIMAÇÕES */
-@keyframes fadeIn{
-  from{opacity:0}
-  to{opacity:1}
-}
-
-@keyframes slideUp{
-  from{transform:translateY(20px);opacity:0}
-  to{transform:translateY(0);opacity:1}
-}
-
-@keyframes float{
-  0%,100%{transform:translateY(0)}
-  50%{transform:translateY(-4px)}
-}
+.float img{width:26px}
 
 /* RESPONSIVO */
 @media(max-width:900px){
-  .hero{grid-template-columns:1fr}
-  .gallery{grid-template-columns:repeat(2,1fr)}
+  .hero{
+    grid-template-columns:1fr;
+  }
+
+  /* 🔥 INVERTE ORDEM NO MOBILE */
+  .hero aside{
+    order:-1;
+  }
+
+  .gallery{
+    grid-template-columns:repeat(2,1fr);
+  }
 }
 
 @media(max-width:520px){
-  .gallery{grid-template-columns:1fr}
+  .gallery{
+    grid-template-columns:1fr;
+  }
 }
 </style>
 </head>
@@ -252,7 +195,7 @@ footer{
   <div class="brand">
     <img src="https://i.ibb.co/F4fd0N9L/Logo-Luderia-Carioca-Fundo-Transparente.png">
     <div>
-      <h1>Luderia Carioca</h1>
+      <strong>Luderia Carioca</strong><br>
       <small>Rua do Catete, 62 — RJ</small>
     </div>
   </div>
@@ -302,23 +245,21 @@ footer{
 
   </main>
 
-  <footer>
-    <div>© 2026 Luderia Carioca</div>
-
-    <div class="social">
-      <a href="https://wa.me/5521973548602" target="_blank">
-        <img src="https://cdn-icons-png.flaticon.com/512/733/733585.png">
-      </a>
-      <a href="https://www.instagram.com/luderiacariocajogos" target="_blank">
-        <img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png">
-      </a>
-    </div>
-  </footer>
-
 </div>
 
+<!-- MODAL -->
 <div id="modal" onclick="closeModal()">
   <img src="https://i.postimg.cc/T3qJVwfn/cardapio.jpg">
+</div>
+
+<!-- FLOAT -->
+<div class="float">
+  <a class="whatsapp" href="https://wa.me/5521973548602" target="_blank">
+    <img src="https://cdn-icons-png.flaticon.com/512/733/733585.png">
+  </a>
+  <a class="instagram" href="https://www.instagram.com/luderiacariocajogos" target="_blank">
+    <img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png">
+  </a>
 </div>
 
 <script>
