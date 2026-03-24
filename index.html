@@ -17,7 +17,6 @@
   --text:#ffffff;
   --muted:#cbd5e1;
   --line:rgba(255,255,255,.12);
-
   --radius:18px;
 }
 
@@ -40,11 +39,10 @@ a{ text-decoration:none; color:inherit; }
 
 .wrap{max-width:1100px;margin:auto;padding:24px}
 
-/* HEADER */
 .brand{display:flex;gap:12px;align-items:center}
 .brand img{width:46px}
 
-/* LAYOUT */
+/* GRID */
 .hero{
   display:grid;
   grid-template-columns:1.2fr .8fr;
@@ -72,11 +70,6 @@ a{ text-decoration:none; color:inherit; }
   background:linear-gradient(135deg,var(--orange),var(--orange2));
   color:#111;
   cursor:pointer;
-  transition:.25s;
-}
-
-.btn:hover{
-  transform:translateY(-2px);
 }
 
 /* GALERIA */
@@ -84,6 +77,7 @@ a{ text-decoration:none; color:inherit; }
   display:grid;
   grid-template-columns:repeat(3,1fr);
   gap:10px;
+  margin-top:20px;
 }
 
 .gallery img{
@@ -92,11 +86,6 @@ a{ text-decoration:none; color:inherit; }
   aspect-ratio:4/3;
   object-fit:cover;
 }
-
-/* STATUS */
-.status{font-weight:900;margin-bottom:16px}
-.open{color:#4ade80}
-.closed{color:#f87171}
 
 /* HORÁRIOS */
 .schedule{
@@ -113,6 +102,11 @@ a{ text-decoration:none; color:inherit; }
   background:rgba(255,255,255,.06);
   border:1px solid var(--line);
 }
+
+/* STATUS */
+.status{font-weight:900;margin-bottom:16px}
+.open{color:#4ade80}
+.closed{color:#f87171}
 
 /* MODAL */
 #modal{
@@ -131,7 +125,7 @@ a{ text-decoration:none; color:inherit; }
   border-radius:12px;
 }
 
-/* 🔥 FLOAT BUTTONS */
+/* FLOAT */
 .float{
   position:fixed;
   bottom:20px;
@@ -149,38 +143,26 @@ a{ text-decoration:none; color:inherit; }
   display:flex;
   align-items:center;
   justify-content:center;
-  box-shadow:0 6px 20px rgba(0,0,0,.4);
-  transition:.2s;
-}
-
-.float a:hover{
-  transform:scale(1.1);
 }
 
 .whatsapp{background:#25D366;}
 .instagram{background:#E1306C;}
-
 .float img{width:26px}
 
-/* RESPONSIVO */
+/* 🔥 MOBILE */
 @media(max-width:900px){
+
   .hero{
-    grid-template-columns:1fr;
+    display:flex;
+    flex-direction:column;
   }
 
-  /* 🔥 INVERTE ORDEM NO MOBILE */
-  .hero aside{
-    order:-1;
-  }
+  .main-card{order:1;}
+  .hours{order:2;}
 
+  /* 🔥 quebra a galeria do card no mobile */
   .gallery{
-    grid-template-columns:repeat(2,1fr);
-  }
-}
-
-@media(max-width:520px){
-  .gallery{
-    grid-template-columns:1fr;
+    margin-top:24px;
   }
 }
 </style>
@@ -202,7 +184,8 @@ a{ text-decoration:none; color:inherit; }
 
   <main class="hero">
 
-    <section class="card">
+    <!-- 🔥 CARD ÚNICO (conteúdo + galeria) -->
+    <section class="card main-card">
       <h2>Luderia Carioca</h2>
 
       <p>
@@ -217,6 +200,7 @@ a{ text-decoration:none; color:inherit; }
         <a class="btn" href="https://maps.app.goo.gl/XU7Xuym5vxjvWXQm8" target="_blank">📍 Ver como chegar</a>
       </div>
 
+      <!-- 🔥 GALERIA AGORA DENTRO DO MESMO CARD -->
       <div class="gallery">
         <img src="https://i.ibb.co/x8P2Csbc/padr-o.webp">
         <img src="https://i.ibb.co/TB9RmS24/sobremesa.webp">
@@ -227,7 +211,8 @@ a{ text-decoration:none; color:inherit; }
       </div>
     </section>
 
-    <aside class="card">
+    <!-- HORÁRIOS -->
+    <aside class="card hours">
       <div id="status" class="status"></div>
 
       <h3>Horário de funcionamento</h3>
