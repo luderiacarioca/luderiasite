@@ -73,6 +73,12 @@ a{text-decoration:none;color:inherit;}
   background:linear-gradient(135deg,var(--orange),var(--orange2));
   color:#111;
   cursor:pointer;
+  transition:.25s;
+}
+
+.btn:hover{
+  transform:translateY(-3px);
+  box-shadow:0 8px 20px rgba(0,0,0,.35);
 }
 
 /* GALERIA */
@@ -89,6 +95,11 @@ a{text-decoration:none;color:inherit;}
   aspect-ratio:4/3;
   object-fit:cover;
   cursor:pointer;
+  transition:.3s;
+}
+
+.gallery img:hover{
+  transform:scale(1.05);
 }
 
 /* STATUS */
@@ -116,7 +127,24 @@ a{text-decoration:none;color:inherit;}
   border:1px solid var(--line);
 }
 
-/* LIGHTBOX */
+/* MODAL CARDÁPIO */
+#menuModal{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.9);
+  justify-content:center;
+  align-items:center;
+  z-index:999;
+}
+
+#menuModal img{
+  max-width:90%;
+  max-height:90%;
+  border-radius:12px;
+}
+
+/* LIGHTBOX IMAGENS */
 #lightbox{
   display:none;
   position:fixed;
@@ -157,7 +185,7 @@ a{text-decoration:none;color:inherit;}
 .instagram{background:#E1306C;}
 .float img{width:26px}
 
-/* 🔥 MOBILE CORRETO */
+/* MOBILE */
 @media(max-width:900px){
 
   .hero{
@@ -165,12 +193,10 @@ a{text-decoration:none;color:inherit;}
     flex-direction:column;
   }
 
-  /* ORDEM CORRETA */
   .main{order:1;}
   .gallery{order:2;}
   .hours{order:3;}
 
-  /* fotos pequenas */
   .gallery{
     grid-template-columns:repeat(2,1fr);
   }
@@ -194,7 +220,6 @@ a{text-decoration:none;color:inherit;}
 
   <main class="hero">
 
-    <!-- APRESENTAÇÃO -->
     <section class="card main">
       <h2>Luderia Carioca</h2>
 
@@ -210,7 +235,6 @@ a{text-decoration:none;color:inherit;}
         <a class="btn" href="https://maps.app.goo.gl/XU7Xuym5vxjvWXQm8" target="_blank">📍 Ver como chegar</a>
       </div>
 
-      <!-- GALERIA -->
       <div class="gallery">
         <img src="https://i.ibb.co/x8P2Csbc/padr-o.webp" onclick="openImg(this.src)">
         <img src="https://i.ibb.co/TB9RmS24/sobremesa.webp" onclick="openImg(this.src)">
@@ -221,7 +245,6 @@ a{text-decoration:none;color:inherit;}
       </div>
     </section>
 
-    <!-- HORÁRIOS -->
     <aside class="card hours">
       <div id="status" class="status"></div>
 
@@ -242,6 +265,11 @@ a{text-decoration:none;color:inherit;}
 
 </div>
 
+<!-- MODAL CARDÁPIO -->
+<div id="menuModal" onclick="closeMenu()">
+  <img src="https://i.postimg.cc/T3qJVwfn/cardapio.jpg">
+</div>
+
 <!-- LIGHTBOX -->
 <div id="lightbox" onclick="closeImg()">
   <img id="lightbox-img">
@@ -258,6 +286,13 @@ a{text-decoration:none;color:inherit;}
 </div>
 
 <script>
+function openMenu(){
+  document.getElementById("menuModal").style.display="flex";
+}
+function closeMenu(){
+  document.getElementById("menuModal").style.display="none";
+}
+
 function openImg(src){
   document.getElementById("lightbox").style.display="flex";
   document.getElementById("lightbox-img").src=src;
