@@ -116,15 +116,24 @@ a{text-decoration:none;color:inherit;}
 .table-availability{
   display:none;
   align-items:center;
-  gap:9px;
+  flex-wrap:wrap;
+  gap:8px 10px;
   margin:0 0 14px;
-  padding:9px 11px;
-  border:1px solid rgba(255,255,255,.1);
+  padding:12px 14px;
+  border:1px solid rgba(255,132,0,.38);
   border-radius:12px;
-  background:rgba(255,255,255,.045);
+  background:linear-gradient(135deg,rgba(255,132,0,.13),rgba(255,255,255,.055));
+  box-shadow:0 8px 22px rgba(0,0,0,.12);
   color:var(--muted);
   font-size:13px;
   line-height:1.35;
+}
+.availability-question{
+  width:100%;
+  color:#ffad4d;
+  font-size:11px;
+  font-weight:950;
+  letter-spacing:.1em;
 }
 .table-availability.is-visible{display:flex}
 .availability-dot{
@@ -274,7 +283,7 @@ a{text-decoration:none;color:inherit;}
     <aside class="card hours">
       <div id="status" class="status"></div>
       <div id="tableAvailability" class="table-availability" role="status" aria-live="polite">
-        <span class="availability-dot" aria-hidden="true"></span>
+        <strong class="availability-question">TEM MESA?</strong><span class="availability-dot" aria-hidden="true"></span>
         <span><span id="freeTables" class="availability-count">—</span> mesas livres</span>
         <span class="availability-separator" aria-hidden="true">•</span>
         <span><span id="availableSeats" class="availability-count">—</span> lugares</span>
