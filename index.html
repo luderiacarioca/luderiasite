@@ -388,17 +388,47 @@ const panel = document.getElementById("tableAvailability");
 const freeTables = document.getElementById("freeTables");
 const availableSeats = document.getElementById("availableSeats");
 const db = getFirestore(initializeApp(firebaseConfig));
+let latestSummary = null;
+
+function isAvailabilityWindow(){
+  const parts = new Intl.DateTimeFormat("en-US", {
+    timeZone: "America/Sao_Paulo",
+    weekday: "short",
+    hour: "2-digit",
+    minute: "2-digit",
+    hourCycle: "h23"
+  }).formatToParts(new Date());
+  const value = (type) => parts.find((part) => part.type === type)?.value;
+  const weekday = value("weekday");
+  const time = Number(value("hour")) + Number(value("minute")) / 60;
+
+  return (
+    (weekday === "Fri" && time >= 16) ||
+    (weekday === "Sat" && time >= 14) ||
+    (weekday === "Sun" && time >= 14 && time < 22)
+  );
+}
+
+function renderAvailability(){
+  if (!latestSummary || !isAvailabilityWindow()) {
+    panel.classList.remove("is-visible");
+    return;
+  }
+
+  freeTables.textContent = Number(latestSummary.freeTables ?? 0).toLocaleString("pt-BR");
+  availableSeats.textContent = Number(latestSummary.availableSeats ?? 0).toLocaleString("pt-BR");
+  panel.classList.add("is-visible");
+}
 
 onSnapshot(doc(db, "public", "tableAvailability"), (snapshot) => {
-  if (!snapshot.exists()) return;
-
-  const summary = snapshot.data();
-  freeTables.textContent = Number(summary.freeTables ?? 0).toLocaleString("pt-BR");
-  availableSeats.textContent = Number(summary.availableSeats ?? 0).toLocaleString("pt-BR");
-  panel.classList.add("is-visible");
+  latestSummary = snapshot.exists() ? snapshot.data() : null;
+  renderAvailability();
 }, () => {
-  panel.classList.remove("is-visible");
+  latestSummary = null;
+  renderAvailability();
 });
+
+setInterval(renderAvailability, 60000);
 </script>
 </body>
 </html>
