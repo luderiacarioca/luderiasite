@@ -111,6 +111,32 @@ a{text-decoration:none;color:inherit;}
 .open{color:#4ade80}
 .closed{color:#f87171}
 
+
+/* DISPONIBILIDADE DE MESAS */
+.table-availability{
+  display:none;
+  align-items:center;
+  gap:9px;
+  margin:0 0 14px;
+  padding:9px 11px;
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:12px;
+  background:rgba(255,255,255,.045);
+  color:var(--muted);
+  font-size:13px;
+  line-height:1.35;
+}
+.table-availability.is-visible{display:flex}
+.availability-dot{
+  width:7px;
+  height:7px;
+  flex:0 0 7px;
+  border-radius:50%;
+  background:#4ade80;
+  box-shadow:0 0 0 3px rgba(74,222,128,.1);
+}
+.availability-count{color:#fff;font-weight:800}
+.availability-separator{opacity:.4}
 /* HORÁRIOS */
 .schedule{
   display:flex;
@@ -247,6 +273,12 @@ a{text-decoration:none;color:inherit;}
 
     <aside class="card hours">
       <div id="status" class="status"></div>
+      <div id="tableAvailability" class="table-availability" role="status" aria-live="polite">
+        <span class="availability-dot" aria-hidden="true"></span>
+        <span><span id="freeTables" class="availability-count">—</span> mesas livres</span>
+        <span class="availability-separator" aria-hidden="true">•</span>
+        <span><span id="availableSeats" class="availability-count">—</span> lugares</span>
+      </div>
 
       <h3>Horário</h3>
 
@@ -338,5 +370,35 @@ function checkOpen(){
 checkOpen();
 </script>
 
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+import { doc, getFirestore, onSnapshot } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCndHjb4nigb3NpqnI7oQcnkPL1R5_mSdo",
+  authDomain: "gestao-de-mesas-4fc06.firebaseapp.com",
+  projectId: "gestao-de-mesas-4fc06",
+  storageBucket: "gestao-de-mesas-4fc06.firebasestorage.app",
+  messagingSenderId: "672664599204",
+  appId: "1:672664599204:web:d31ad2cd1decfce88f8431"
+};
+
+const panel = document.getElementById("tableAvailability");
+const freeTables = document.getElementById("freeTables");
+const availableSeats = document.getElementById("availableSeats");
+const db = getFirestore(initializeApp(firebaseConfig));
+
+onSnapshot(doc(db, "public", "tableAvailability"), (snapshot) => {
+  if (!snapshot.exists()) return;
+
+  const summary = snapshot.data();
+  freeTables.textContent = Number(summary.freeTables ?? 0).toLocaleString("pt-BR");
+  availableSeats.textContent = Number(summary.availableSeats ?? 0).toLocaleString("pt-BR");
+  panel.classList.add("is-visible");
+}, () => {
+  panel.classList.remove("is-visible");
+});
+</script>
 </body>
 </html>
