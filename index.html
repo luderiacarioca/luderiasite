@@ -146,6 +146,50 @@ a{text-decoration:none;color:inherit;}
 }
 .availability-count{color:#fff;font-weight:800}
 .availability-separator{opacity:.4}
+
+/* AVISO TEMPORARIO — EVENTO PARTICULAR EM 29/11/2026 */
+.event-alert{
+  display:none;
+  align-items:center;
+  justify-content:center;
+  gap:12px;
+  margin:18px 0 4px;
+  padding:15px 18px;
+  border:2px solid rgba(255,255,255,.68);
+  border-radius:16px;
+  background:linear-gradient(135deg,#dc2626,#991b1b);
+  color:#fff;
+  box-shadow:0 12px 30px rgba(127,29,29,.42);
+  text-align:center;
+  font-weight:900;
+  letter-spacing:.01em;
+}
+.event-alert.is-visible{display:flex}
+.event-alert-icon{
+  display:grid;
+  place-items:center;
+  width:34px;
+  height:34px;
+  flex:0 0 34px;
+  border-radius:50%;
+  background:#fff;
+  color:#b91c1c;
+  font-size:21px;
+}
+.event-alert strong{font-size:17px}
+.event-alert span{font-size:14px}
+.event-closed{
+  border-color:rgba(248,113,113,.65)!important;
+  background:linear-gradient(135deg,rgba(185,28,28,.42),rgba(127,29,29,.28))!important;
+  color:#fecaca;
+}
+.event-closed strong{
+  max-width:190px;
+  color:#fff;
+  font-size:12px;
+  line-height:1.2;
+  text-align:right;
+}
 /* HORÁRIOS */
 .schedule{
   display:flex;
@@ -236,6 +280,14 @@ a{text-decoration:none;color:inherit;}
     grid-template-columns:repeat(2,1fr);
   }
 }
+
+@media(max-width:600px){
+  .event-alert{align-items:flex-start;text-align:left}
+  .event-alert strong{font-size:15px}
+  .event-alert span{font-size:13px}
+  .event-closed{align-items:flex-start;gap:8px}
+  .event-closed strong{max-width:150px}
+}
 </style>
 </head>
 
@@ -251,6 +303,11 @@ a{text-decoration:none;color:inherit;}
       <strong>Luderia Carioca</strong><br>
       <small>Rua do Catete, 62 — RJ</small>
     </div>
+  </div>
+
+  <div id="eventAlert" class="event-alert" role="alert">
+    <span class="event-alert-icon" aria-hidden="true">!</span>
+    <div><strong>ATENÇÃO 29/11 — Domingo</strong><br><span>Fechado para evento particular</span></div>
   </div>
 
   <main class="hero">
@@ -298,7 +355,7 @@ a{text-decoration:none;color:inherit;}
         <div class="day"><span>Quinta</span><strong>17h — 23h</strong></div>
         <div class="day"><span>Sexta</span><strong>16h — 00h</strong></div>
         <div class="day"><span>Sábado</span><strong>14h — 00h</strong></div>
-        <div class="day"><span>Domingo</span><strong>14h — 22h</strong></div>
+        <div id="sundaySchedule" class="day"><span id="sundayLabel">Domingo</span><strong id="sundayHours">14h — 22h</strong></div>
       </div>
     </aside>
 
@@ -342,6 +399,35 @@ function closeImg(){
   document.getElementById("lightbox").style.display="none";
 }
 
+function saoPauloDateKey(){
+  const parts=new Intl.DateTimeFormat("en-CA",{
+    timeZone:"America/Sao_Paulo",
+    year:"numeric",
+    month:"2-digit",
+    day:"2-digit"
+  }).formatToParts(new Date());
+  const value=(type)=>parts.find((part)=>part.type===type)?.value;
+  return `${value("year")}-${value("month")}-${value("day")}`;
+}
+
+function isPrivateEventNoticeActive(){
+  const today=saoPauloDateKey();
+  return today>="2026-11-23" && today<="2026-11-29";
+}
+
+function renderPrivateEventNotice(){
+  const active=isPrivateEventNoticeActive();
+  const eventAlert=document.getElementById("eventAlert");
+  const sundaySchedule=document.getElementById("sundaySchedule");
+  const sundayLabel=document.getElementById("sundayLabel");
+  const sundayHours=document.getElementById("sundayHours");
+
+  eventAlert.classList.toggle("is-visible",active);
+  sundaySchedule.classList.toggle("event-closed",active);
+  sundayLabel.textContent=active ? "Domingo · 29/11" : "Domingo";
+  sundayHours.textContent=active ? "FECHADO PARA EVENTO PARTICULAR" : "14h — 22h";
+}
+
 function checkOpen(){
   const now=new Date();
   const d=now.getDay();
@@ -358,6 +444,12 @@ function checkOpen(){
   };
 
   const el=document.getElementById("status");
+
+  if(saoPauloDateKey()==="2026-11-29"){
+    el.innerHTML="❌ Fechado para evento particular";
+    el.className="status closed";
+    return;
+  }
 
   if(!s[d]){
     el.innerHTML="❌ Fechado hoje";
@@ -376,7 +468,12 @@ function checkOpen(){
   }
 }
 
+renderPrivateEventNotice();
 checkOpen();
+setInterval(()=>{
+  renderPrivateEventNotice();
+  checkOpen();
+},60000);
 </script>
 
 
@@ -410,6 +507,10 @@ function isAvailabilityWindow(){
   const value = (type) => parts.find((part) => part.type === type)?.value;
   const weekday = value("weekday");
   const time = Number(value("hour")) + Number(value("minute")) / 60;
+
+  if (window.isPrivateEventNoticeActive?.() && weekday === "Sun") {
+    return false;
+  }
 
   return (
     (weekday === "Fri" && time >= 16) ||
