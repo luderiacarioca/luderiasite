@@ -147,6 +147,54 @@ a{text-decoration:none;color:inherit;}
 .availability-count{color:#fff;font-weight:800}
 .availability-separator{opacity:.4}
 
+/* AVISO TEMPORARIO — CAMPEONATO ACARAJE EM 26/11/2026 */
+.tournament-notice{
+  display:none;
+  align-items:center;
+  gap:11px;
+  margin:0 0 14px;
+  padding:12px 14px;
+  border:1px solid rgba(255,255,255,.42);
+  border-radius:14px;
+  background:linear-gradient(135deg,var(--orange),var(--orange2));
+  color:#111;
+  box-shadow:0 8px 22px rgba(0,0,0,.22);
+  transition:.2s;
+}
+.tournament-notice.is-visible{display:flex}
+.tournament-notice:hover{
+  transform:translateY(-2px);
+  box-shadow:0 11px 26px rgba(0,0,0,.32);
+}
+.tournament-notice-icon{
+  display:grid;
+  place-items:center;
+  width:76px;
+  height:42px;
+  padding:4px 6px;
+  flex:0 0 76px;
+  border-radius:10px;
+  background:rgba(255,255,255,.82);
+}
+.tournament-notice-icon img{
+  display:block;
+  width:100%;
+  height:100%;
+  object-fit:contain;
+}
+.tournament-notice-copy{flex:1;line-height:1.25}
+.tournament-notice-copy strong{display:block;font-size:14px}
+.tournament-notice-copy span{font-size:12px;font-weight:700}
+.tournament-notice-action{
+  flex:0 0 auto;
+  padding:7px 9px;
+  border-radius:9px;
+  background:#fff;
+  color:#8a3900;
+  font-size:11px;
+  font-weight:950;
+}
+
 /* AVISO TEMPORARIO — EVENTO PARTICULAR EM 29/11/2026 */
 .event-alert{
   display:none;
@@ -282,6 +330,9 @@ a{text-decoration:none;color:inherit;}
 }
 
 @media(max-width:600px){
+  .tournament-notice{align-items:flex-start;flex-wrap:wrap}
+  .tournament-notice-copy{min-width:calc(100% - 101px)}
+  .tournament-notice-action{width:100%;text-align:center}
   .event-alert{align-items:flex-start;text-align:left}
   .event-alert strong{font-size:15px}
   .event-alert span{font-size:13px}
@@ -339,6 +390,14 @@ a{text-decoration:none;color:inherit;}
 
     <aside class="card hours">
       <div id="status" class="status"></div>
+      <a id="tournamentNotice" class="tournament-notice" href="https://forms.gle/hjMSzde9167Y6q7C9" target="_blank" rel="noopener noreferrer" aria-label="Inscreva-se no Campeonato do jogo Acarajé">
+        <span class="tournament-notice-icon" aria-hidden="true"><img src="logo-acaraje-colorido.png" alt=""></span>
+        <span class="tournament-notice-copy">
+          <strong>Campeonato do jogo Acarajé</strong>
+          <span>Evento em 26/11 · Aberto ao público</span>
+        </span>
+        <span class="tournament-notice-action">INSCREVA-SE</span>
+      </a>
       <div id="tableAvailability" class="table-availability" role="status" aria-live="polite">
         <strong class="availability-question">TEM MESA?</strong><span class="availability-dot" aria-hidden="true"></span>
         <span><span id="freeTables" class="availability-count">—</span> mesas livres</span>
@@ -428,6 +487,17 @@ function renderPrivateEventNotice(){
   sundayHours.textContent=active ? "FECHADO PARA EVENTO PARTICULAR" : "14h — 22h";
 }
 
+function isTournamentNoticeActive(){
+  const now=Date.now();
+  const startsAt=new Date("2026-11-23T00:00:00-03:00").getTime();
+  const endsAt=new Date("2026-11-26T16:00:00-03:00").getTime();
+  return now>=startsAt && now<endsAt;
+}
+
+function renderTournamentNotice(){
+  document.getElementById("tournamentNotice").classList.toggle("is-visible",isTournamentNoticeActive());
+}
+
 function checkOpen(){
   const now=new Date();
   const d=now.getDay();
@@ -469,9 +539,11 @@ function checkOpen(){
 }
 
 renderPrivateEventNotice();
+renderTournamentNotice();
 checkOpen();
 setInterval(()=>{
   renderPrivateEventNotice();
+  renderTournamentNotice();
   checkOpen();
 },60000);
 </script>
